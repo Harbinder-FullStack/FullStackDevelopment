@@ -1,0 +1,106 @@
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+.app-container{
+  border: 1px solid #111010;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+header,footer, .add-item-container, .remove-item-container, .list-item-container, .search-item-container{
+  border: 1px solid #111010;
+  border-radius: 10px;
+  padding: 1rem;
+  margin: 1rem;
+}
+
+
+.remove-item-container ul{
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  align-items: center;
+  justify-content: center;  
+}
+
+.remove-item-container ul li{
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+}
+
+.main-container{
+  border: 1px solid #111010;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.product-card {
+  border: 1px solid #111010;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  margin: 1rem;
+  padding: 1.5rem;
+  text-align: center;
+}
+
+.list-item-container {
+  border: 1px solid #111010;
+  border-radius: 10px;
+  width: 200px;
+  margin: 1rem;
+  padding: 1rem;
+  border-radius: 10px;
+}
+button {
+  background-color: #4CAF50; /* Green */
+  border: none;
+  color: white;
+  padding: 10px 24px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.remove-item-container button {
+  background-color: #f44336; /* Red */
+  border: none;
+  color: white;
+  padding: 10px 24px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+header button {
+  background-color: #008CBA; /* Blue */
+  border: none;
+  color: white;
+  padding: 10px 24px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+}
+input {
+  padding: 10px;
+  margin: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  width: 200px;
+}
