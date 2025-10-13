@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Before Learning Express.js - Student Checklist</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; line-height: 1.6; }
+    h1, h2 { color: #2c3e50; }
+    ul { margin: 10px 0 20px 25px; }
+    li { margin-bottom: 8px; }
+    .highlight { color: #27ae60; font-weight: bold; }
+    .example { background: #f4f4f4; padding: 10px; border-radius: 6px; margin: 10px 0; }
+  </style>
+</head>
+<body>
+  <h1>📌 Before Learning Express.js</h1>
+  <p>
+    Express.js makes web development easy in Node.js, but before diving into it, 
+    students should understand the <span class="highlight">foundational concepts</span> below.
+  </p>
+
+  <h2>1. JavaScript Fundamentals (ES6+)</h2>
+  <ul>
+    <li>Variables: <code>let</code>, <code>const</code>, <code>var</code></li>
+    <li>Functions: normal, arrow, callbacks</li>
+    <li>Objects & Arrays</li>
+    <li>Classes & Inheritance</li>
+    <li>Modules: <code>require</code>/<code>module.exports</code>, <code>import/export</code></li>
+    <li>Async handling: Promises & <code>async/await</code></li>
+  </ul>
+
+  <h2>2. Node.js Basics</h2>
+  <ul>
+    <li>What is Node.js (JavaScript runtime, not a language)</li>
+    <li>Running files: <code>node file.js</code></li>
+    <li>Core Modules: <code>fs</code>, <code>path</code>, <code>http</code></li>
+    <li>npm / npx usage</li>
+    <li><code>package.json</code> basics</li>
+    <li>Using <code>nodemon</code> for auto-reload</li>
+  </ul>
+
+  <h2>3. HTTP Fundamentals</h2>
+  <ul>
+    <li>Request/Response cycle</li>
+    <li>HTTP Methods: GET, POST, PUT, DELETE</li>
+    <li>Status Codes: 200, 201, 400, 404, 500</li>
+    <li>Headers, Query Params, Path Params</li>
+    <li>REST API basics</li>
+  </ul>
+
+  <h2>4. Manual HTTP Server in Node.js</h2>
+  <p>Example without Express (so students see why Express is useful):</p>
+  <pre class="example">
+import http from 'http';
+
+const server = http.createServer((req, res) => {
+  if (req.url === '/' && req.method === 'GET') {
+    res.writeHead(200, { 'Content-Type': 'text/plain' });
+    res.end('Hello World');
+  } else {
+    res.writeHead(404);
+    res.end('Not Found');
+  }
+});
+
+server.listen(3000, () => console.log('Server running on http://localhost:3000'));
+  </pre>
+
+  <h2>5. Middleware Concept</h2>
+  <p>
+    Middleware = a function that sits between <span class="highlight">request</span> and 
+    <span class="highlight">response</span>, like a security guard checking visitors before entry.
+  </p>
+
+  <h2>6. JSON & Data Handling</h2>
+  <ul>
+    <li>Working with <code>JSON.parse()</code> and <code>JSON.stringify()</code></li>
+    <li>Sending JSON from Node.js</li>
+    <li>Why APIs usually return JSON</li>
+  </ul>
+
+  <h2>7. Async I/O</h2>
+  <p>
+    Understand <span class="highlight">non-blocking I/O</span>:
+  </p>
+  <pre class="example">
+// Non-blocking
+fs.readFile('data.txt', 'utf8', (err, data) => {
+  console.log(data);
+});
+console.log('This runs first!');
+  </pre>
+
+  <h2>8. Project Setup</h2>
+  <ul>
+    <li>Initialize project: <code>npm init -y</code></li>
+    <li>Organize folders: <code>routes/</code>, <code>controllers/</code>, <code>models/</code></li>
+    <li>Use environment variables (<code>dotenv</code>)</li>
+  </ul>
+
+  <h2>✅ Teaching Flow</h2>
+  <ol>
+    <li>JS refresher → callbacks, promises, async/await</li>
+    <li>Node intro → core modules, npm</li>
+    <li>HTTP basics → requests, responses, status codes</li>
+    <li>Manual HTTP server → show limitations</li>
+    <li>Introduce middleware concept</li>
+    <li>Finally: Explain how Express solves these problems</li>
+  </ol>
+</body>
+</html>

@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Node.js Input and Output Interfaces</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      margin: 20px;
+      background-color: #f9f9f9;
+      color: #333;
+    }
+    h1, h2, h3 {
+      color: #2c3e50;
+    }
+    section {
+      background: #fff;
+      padding: 20px;
+      margin-bottom: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    code {
+      background: #eee;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 0.95em;
+    }
+    pre {
+      background: #272822;
+      color: #f8f8f2;
+      padding: 12px;
+      border-radius: 6px;
+      overflow-x: auto;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: left;
+    }
+    th {
+      background: #34495e;
+      color: white;
+    }
+    tr:nth-child(even) {
+      background: #f2f2f2;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>📘 Node.js Input and Output Interfaces</h1>
+
+  <section>
+    <h2>1. CLI (Command Line Interface)</h2>
+    <p><strong>Input:</strong> Arguments, stdin<br>
+       <strong>Output:</strong> Console (stdout)</p>
+    <pre><code>// app.js
+const args = process.argv.slice(2);
+console.log("Arguments:", args);
+
+process.stdin.on("data", (data) => {
+  console.log("You typed:", data.toString().trim());
+});</code></pre>
+    <p>Run: <code>node app.js hello world</code></p>
+  </section>
+
+  <section>
+    <h2>2. Browser (HTTP Requests)</h2>
+    <p><strong>Input:</strong> HTTP requests<br>
+       <strong>Output:</strong> HTML/JSON response</p>
+    <pre><code>const http = require("http");
+
+http.createServer((req, res) => {
+  res.writeHead(200, {"Content-Type": "text/plain"});
+  res.end("Hello from Node.js!");
+}).listen(3000);</code></pre>
+    <p>Visit: <code>http://localhost:3000</code></p>
+  </section>
+
+  <section>
+    <h2>3. Frontend Apps (React, Angular, etc.)</h2>
+    <p><strong>Input:</strong> API requests (fetch/axios)<br>
+       <strong>Output:</strong> JSON responses</p>
+    <pre><code>// Express server
+const express = require("express");
+const app = express();
+app.use(express.json());
+
+app.post("/api/data", (req, res) => {
+  res.json({ received: req.body });
+});
+app.listen(4000, () => console.log("API running on 4000"));</code></pre>
+  </section>
+
+  <section>
+    <h2>4. File System</h2>
+    <p><strong>Input:</strong> File read<br>
+       <strong>Output:</strong> File write</p>
+    <pre><code>const fs = require("fs");
+fs.writeFileSync("output.txt", "Hello File!");
+console.log(fs.readFileSync("output.txt", "utf8"));</code></pre>
+  </section>
+
+  <section>
+    <h2>5. Databases</h2>
+    <p><strong>Input:</strong> Query requests<br>
+       <strong>Output:</strong> Query results</p>
+    <pre><code>const mongoose = require("mongoose");
+mongoose.connect("mongodb://localhost:27017/test");
+
+const User = mongoose.model("User", { name: String });
+const user = new User({ name: "John" });
+user.save().then(() => console.log("User saved"));</code></pre>
+  </section>
+
+  <section>
+    <h2>6. API Tools (Postman, curl)</h2>
+    <p><strong>Input:</strong> HTTP requests<br>
+       <strong>Output:</strong> JSON responses</p>
+    <pre><code>// Express API
+app.get("/api/hello", (req, res) => {
+  res.json({ msg: "Hello API!" });
+});</code></pre>
+    <p>Test with curl: <code>curl http://localhost:4000/api/hello</code></p>
+  </section>
+
+  <section>
+    <h2>7. Background / Scheduled Jobs</h2>
+    <p><strong>Input:</strong> Schedule trigger<br>
+       <strong>Output:</strong> Logs, file, DB update</p>
+    <pre><code>const cron = require("node-cron");
+cron.schedule("* * * * *", () => console.log("Runs every minute"));</code></pre>
+  </section>
+
+  <section>
+    <h2>✅ Summary Table</h2>
+    <table>
+      <tr>
+        <th>Interface</th>
+        <th>Input</th>
+        <th>Output</th>
+        <th>Example Use Case</th>
+      </tr>
+      <tr>
+        <td>CLI</td>
+        <td>Arguments, stdin</td>
+        <td>Console (stdout)</td>
+        <td>Build tools, scripts</td>
+      </tr>
+      <tr>
+        <td>Browser</td>
+        <td>HTTP requests</td>
+        <td>HTML/JSON</td>
+        <td>Websites</td>
+      </tr>
+      <tr>
+        <td>React/FE</td>
+        <td>fetch/axios requests</td>
+        <td>JSON responses</td>
+        <td>SPAs consuming APIs</td>
+      </tr>
+      <tr>
+        <td>File</td>
+        <td>File read</td>
+        <td>File write</td>
+        <td>Config, logs</td>
+      </tr>
+      <tr>
+        <td>DB</td>
+        <td>Queries</td>
+        <td>Query results</td>
+        <td>Data storage</td>
+      </tr>
+      <tr>
+        <td>API Tool</td>
+        <td>HTTP requests</td>
+        <td>JSON responses</td>
+        <td>Testing APIs</td>
+      </tr>
+      <tr>
+        <td>Cron Job</td>
+        <td>Schedule trigger</td>
+        <td>Logs, DB update</td>
+        <td>Automation</td>
+      </tr>
+    </table>
+  </section>
+
+</body>
+</html>

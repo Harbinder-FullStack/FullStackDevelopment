@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Practical: Person Class Hierarchy</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f9f9f9;
+      margin: 20px;
+    }
+    h2 {
+      color: #333;
+    }
+    button {
+      background-color: #4CAF50;
+      color: white;
+      padding: 10px 15px;
+      margin: 5px 0;
+      border: none;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+    button:hover {
+      background-color: #45a049;
+    }
+    pre {
+      background: #eee;
+      padding: 10px;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Person → Student and Teacher (Inheritance Practical)</h2>
+  <p>Click the buttons below to run examples:</p>
+
+  <button onclick="runStudentDemo()">Show Student Info</button>
+  <button onclick="runTeacherDemo()">Show Teacher Info</button>
+
+  <pre id="output"></pre>
+
+  <script>
+    class Person {
+      constructor(name, age) {
+        this.name = name;
+        this.age = age;
+      }
+      displayInfo() {
+        return `Name: ${this.name}, Age: ${this.age}`;
+      }
+    }
+
+    class Student extends Person {
+      constructor(name, age, course) {
+        super(name, age);
+        this.course = course;
+      }
+      displayInfo() {
+        return `Name: ${this.name}, Age: ${this.age}, Course: ${this.course}`;
+      }
+    }
+
+    class Teacher extends Person {
+      constructor(name, age, subject) {
+        super(name, age);
+        this.subject = subject;
+      }
+      displayInfo() {
+        return `Name: ${this.name}, Age: ${this.age}, Subject: ${this.subject}`;
+      }
+    }
+
+    function runStudentDemo() {
+      const student1 = new Student("Alice", 20, "Computer Science");
+      document.getElementById("output").textContent = student1.displayInfo();
+    }
+
+    function runTeacherDemo() {
+      const teacher1 = new Teacher("Mr. Bob", 40, "Mathematics");
+      document.getElementById("output").textContent = teacher1.displayInfo();
+    }
+  </script>
+
+</body>
+</html>

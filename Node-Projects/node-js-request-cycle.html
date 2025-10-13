@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Node.js Lecture: Multi vs Single Thread & Request Cycle</title>
+  <style>
+    body { font-family: Arial, sans-serif; line-height: 1.6; margin: 20px; }
+    h1, h2 { color: #2c3e50; }
+    table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+    th, td { border: 1px solid #ccc; padding: 10px; text-align: left; }
+    th { background-color: #f4f4f4; }
+    .diagram { background: #ecf0f1; padding: 15px; border-radius: 8px; margin: 20px 0; }
+    .highlight { color: #27ae60; font-weight: bold; }
+    ul { margin: 10px 0 10px 20px; }
+  </style>
+</head>
+<body>
+  <h1>Node.js Lecture Notes</h1>
+
+  <h2>1. Multi-Threaded vs Single-Threaded Architectures</h2>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Aspect</th>
+        <th>Multi-Threaded Languages (Java, C#, etc.)</th>
+        <th>Single-Threaded (Node.js)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Execution Model</td>
+        <td>Multiple threads run in parallel. Each request may get its own thread.</td>
+        <td>One thread handles all requests using an event loop.</td>
+      </tr>
+      <tr>
+        <td>Concurrency</td>
+        <td>Achieved using multiple OS threads.</td>
+        <td>Achieved using asynchronous, non-blocking I/O.</td>
+      </tr>
+      <tr>
+        <td>Performance</td>
+        <td>Good for CPU-intensive tasks, but thread context switching adds overhead.</td>
+        <td>Excellent for I/O-heavy tasks (APIs, DB queries). Not ideal for CPU-bound work.</td>
+      </tr>
+      <tr>
+        <td>Memory Usage</td>
+        <td>Each thread consumes stack memory. Heavy load may lead to scaling issues.</td>
+        <td>Lightweight, handles thousands of concurrent connections with less memory.</td>
+      </tr>
+      <tr>
+        <td>Complexity</td>
+        <td>Dealing with locks, race conditions, and deadlocks is challenging.</td>
+        <td>No thread-safety issues (single-threaded), but must avoid blocking code.</td>
+      </tr>
+      <tr>
+        <td>Example Use Cases</td>
+        <td>Large enterprise apps with heavy computation.</td>
+        <td>Real-time chat, APIs, microservices, streaming services.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>2. Node.js Request Handling Cycle</h2>
+
+  <div class="diagram">
+    <h3>Steps in Request Cycle:</h3>
+    <ol>
+      <li><span class="highlight">Client Request</span> → Browser or API client sends HTTP request.</li>
+      <li><span class="highlight">Express Router</span> → Matches route (e.g., <code>/api/users</code>).</li>
+      <li><span class="highlight">Middleware</span> → Executes functions like logging, validation, or authentication.</li>
+      <li><span class="highlight">Async I/O Call</span> → Database query, file read, or API call is triggered asynchronously.</li>
+      <li><span class="highlight">Event Loop</span> → Node.js continues handling other requests while I/O is pending.</li>
+      <li><span class="highlight">Callback/Promise</span> → I/O completes, data is returned.</li>
+      <li><span class="highlight">Response</span> → Express sends back the final response to the client.</li>
+    </ol>
+  </div>
+
+  <h3>Visual Flow</h3>
+  <pre class="diagram">
+  Client → Router → Middleware → Async I/O → Event Loop → Callback → Response
+  </pre>
+
+  <h3>Example Code</h3>
+  <pre>
+import express from 'express';
+const app = express();
+
+app.use((req, res, next) => {
+  console.log(`Request: ${req.method} ${req.url}`);
+  next();
+});
+
+app.get('/api/data', async (req, res) => {
+  // Simulating async I/O
+  const data = await new Promise(resolve => setTimeout(() => resolve({ msg: "Hello World" }), 1000));
+  res.json(data);
+});
+
+app.listen(3000, () => console.log('Server running on port 3000'));
+  </pre>
+</body>
+</html>

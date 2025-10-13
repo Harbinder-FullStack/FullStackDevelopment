@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Introduction to Cloud Deployment for Full Stack Apps</title>
+  <style>
+    body { font-family: 'Segoe UI', sans-serif; margin: 2rem; background-color: #fafafa; color: #333; }
+    h1, h2 { text-align: center; color: #1f2937; }
+    section { background: white; padding: 1.5rem 2rem; margin: 1.5rem auto; border-radius: 10px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); max-width: 900px; }
+    h3 { color: #2563eb; margin-top: 1.2rem; }
+    .steps { display: flex; justify-content: space-around; flex-wrap: wrap; text-align: center; margin-top: 1.5rem; }
+    .card { width: 260px; background: #f9fafb; border-radius: 10px; padding: 1rem; margin: 10px; box-shadow: 0 2px 4px rgba(0,0,0,0.08); }
+    .card img { width: 70px; margin: 10px auto; display: block; }
+    .flow { text-align: center; margin: 2rem 0; font-size: 1.2rem; }
+    .flow span { display: inline-block; margin: 0.5rem; padding: 0.3rem 0.6rem; background: #e5e7eb; border-radius: 6px; }
+    pre { background: #f6f8fa; padding: 10px; border-radius: 6px; overflow-x: auto; }
+    a { display: inline-block; text-decoration: none; margin-top: 1.5rem; background: #2563eb; color: white; padding: 10px 18px; border-radius: 6px; transition: 0.2s; }
+    a:hover { background: #1d4ed8; }
+  </style>
+</head>
+<body>
+  <h1>🌩️ Introduction to Cloud Deployment for Full Stack Apps</h1>
+  <p style="text-align:center; max-width:700px; margin:auto;">
+    After creating your <strong>React</strong> frontend, <strong>Node.js/Express</strong> backend, and <strong>MongoDB</strong> database,
+    the next step is to make your app accessible globally. Cloud deployment ensures your app runs consistently, automatically updates with code changes, and is always available to users.
+  </p>
+
+  <section>
+    <h2>🚀 Why We Need Cloud Deployment</h2>
+    <ul>
+      <li>✅ To make the app live and accessible from anywhere.</li>
+      <li>✅ To standardize the environment using containers.</li>
+      <li>✅ To automate build and deployment tasks for every code change.</li>
+      <li>✅ To host securely and scale easily on cloud platforms like AWS.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>⚙️ Three Main Stages</h2>
+
+    <div class="steps">
+      <div class="card">
+        <img src="images/docker_icon.jpg" alt="Docker Icon" />
+        <h3>1️⃣ Multi-Stage Docker Build</h3>
+        <p>Containerize React, Node, and Mongo into isolated environments.  
+        Ensures consistency across all systems and reduces build size.</p>
+      </div>
+
+      <div class="card">
+        <img src="images/github_actions.jpg" alt="GitHub Actions Icon" />
+        <h3>2️⃣ GitHub Actions (CI/CD)</h3>
+        <p>Automate build, testing, and deployment using workflows triggered whenever you push new code to GitHub.</p>
+      </div>
+
+      <div class="card">
+        <img src="images/aws_icon.jpg" alt="AWS Icon" />
+        <h3>3️⃣ AWS Cloud Deployment</h3>
+        <p>Deploy containers on AWS EC2 or ECS, route traffic via Nginx, and make your app live with HTTPS security.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>🔗 How They Work Together</h2>
+    <div class="flow">
+      <span>Developer Pushes Code</span> ➜
+      <span>GitHub Actions Builds Images</span> ➜
+      <span>Docker Images Pushed to Registry</span> ➜
+      <span>AWS Pulls & Runs Containers</span> ➜
+      <span>Users Access App Online</span>
+    </div>
+    
+  <h2>🖼️ Workflow Diagram</h2>
+  <img src="images/ci_cd_pipeline.png" width="800px" height="400px" alt="CI/CD Pipeline Diagram" />
+    <pre>
+React UI  →  Node API  →  MongoDB
+   ▲             │
+   └── Nginx (Reverse Proxy) on AWS
+    </pre>
+  </section>
+
+  <section>
+    <h2>🎯 Summary</h2>
+    <ul>
+      <li><strong>Dockerization:</strong> Package and isolate your app for consistent deployment.</li>
+      <li><strong>CI/CD Automation:</strong> Automatically test, build, and deploy when code changes.</li>
+      <li><strong>Cloud Hosting:</strong> Host and scale your application securely on AWS.</li>
+    </ul>
+    
+  </section>
+
+  <div style="text-align:center;">
+    <a href="docker-multistage.html">Start with → Multi-Stage Docker Build</a>
+  </div>
+</body>
+</html>

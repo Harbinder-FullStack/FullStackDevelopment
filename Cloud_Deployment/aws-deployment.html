@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AWS Cloud Deployment</title>
+  <style>
+    body { font-family: 'Segoe UI', sans-serif; margin: 2rem; line-height: 1.6; }
+    h1, h2 { color: #ff9900; }
+    img { max-width: 100%; border-radius: 8px; box-shadow: 0 0 6px #ddd; }
+    pre { background: #f6f8fa; padding: 8px; border-radius: 6px; overflow-x: auto; }
+  </style>
+</head>
+<body>
+  <h1>AWS Cloud Deployment (EC2 / ECS)</h1>
+
+  <h2>💡 Why It’s Needed</h2>
+  <p>AWS offers scalable infrastructure for deploying full-stack apps. By containerizing our services, we can easily run them 
+  on EC2 (virtual machines) or ECS (managed container service) with high availability and monitoring support.</p>
+
+  <h2>🧭 Steps to Deploy</h2>
+  <ol>
+    <li>Set up an AWS account and create an EC2 instance or ECS cluster.</li>
+    <li>Install Docker and Docker Compose on the EC2 instance.</li>
+    <li>Copy Docker images (or pull from Docker Hub/ECR).</li>
+    <li>Run containers:
+      <pre><code>docker-compose -f docker-compose.prod.yml up -d</code></pre>
+    </li>
+    <li>Configure Nginx or AWS Application Load Balancer for routing.</li>
+    <li>Secure your app with Let’s Encrypt SSL certificates.</li>
+  </ol>
+
+  <h2>🖼️ AWS Architecture Diagram</h2>
+  <img src="images/aws-architecture.png" alt="AWS Deployment Architecture Diagram" />
+
+  <h2>✅ End-to-End Flow</h2>
+  <p>Now your app is deployed on AWS and connected via CI/CD from GitHub, automatically updating every time you push new code.</p>
+
+  <a href="index.html">← Back to Overview</a>
+</body>
+</html>

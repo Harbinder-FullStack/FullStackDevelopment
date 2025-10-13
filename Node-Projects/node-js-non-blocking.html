@@ -1,0 +1,248 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Lecture: Single-threaded vs Multi-threaded & Blocking vs Non-blocking</title>
+  <style>
+    body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;line-height:1.5;margin:0; padding:24px; background:#f7f9fc;color:#0b2545;}
+    header{background:#0b72e6;color:#fff;padding:20px;border-radius:8px;margin-bottom:18px;box-shadow:0 6px 18px rgba(11,114,230,0.12)}
+    h1{margin:0;font-size:1.6rem}
+    h2{color:#083360;margin-top:20px}
+    .lead{opacity:.95}
+    section{background:#fff;padding:18px;border-radius:8px;margin-bottom:16px;box-shadow:0 2px 8px rgba(12,34,66,0.06)}
+    pre{background:#0b1720;color:#dbeafe;padding:12px;border-radius:6px;overflow:auto;font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New";font-size:13px}
+    table{width:100%;border-collapse:collapse;margin-top:10px}
+    th,td{padding:8px;border-bottom:1px solid #eee;text-align:left}
+    th{background:#f3f7ff}
+    .code-note{font-size:0.95rem;color:#0b2545;margin-top:8px}
+    .example {display:flex;gap:12px;flex-wrap:wrap}
+    .box {flex:1;min-width:280px}
+    .tip{background:#fffbea;border-left:4px solid #ffce00;padding:10px;border-radius:6px;color:#5a4b00}
+    footer{opacity:.7;margin-top:14px;font-size:0.9rem}
+    .kbd{background:#eef2ff;padding:2px 6px;border-radius:4px;border:1px solid #e0e7ff;font-family:ui-monospace,monospace}
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Lecture: Single-threaded vs Multi-threaded & Blocking vs Non-blocking</h1>
+    <p class="lead">Clear, practical explanations + runnable examples (server code you can copy/paste).</p>
+  </header>
+
+  <section>
+    <h2>1. Quick Overview</h2>
+    <p>
+      <strong>Single-threaded:</strong> one main thread (Node.js), uses an <em>event loop</em> and asynchronous I/O. Great for <strong>I/O-bound</strong> workloads.
+      <br>
+      <strong>Multi-threaded:</strong> multiple threads (Java, C#, etc.). Each thread can run code concurrently—good for <strong>CPU-bound</strong> tasks.
+    </p>
+  </section>
+
+  <section>
+    <h2>2. Comparison (advantages & disadvantages)</h2>
+    <table>
+      <thead>
+        <tr><th>Aspect</th><th>Single-threaded (Node.js)</th><th>Multi-threaded (Java, C#)</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Concurrency model</td><td>Event loop + non-blocking I/O</td><td>Many threads, blocking or non-blocking I/O</td></tr>
+        <tr><td>Best for</td><td>I/O-bound services (APIs, real-time)</td><td>CPU-bound work (images, ML, heavy computations)</td></tr>
+        <tr><td>Memory & overhead</td><td>Low — single thread</td><td>Higher — each thread has stack + context switches</td></tr>
+        <tr><td>Complexity</td><td>Simpler concurrency (no locks), requires async patterns</td><td>Need synchronization (locks, mutexes), risk of deadlocks</td></tr>
+        <tr><td>Scaling across cores</td><td>Use cluster/worker threads or multiple processes</td><td>Threads natively use multiple cores</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section>
+    <h2>3. Blocking vs Non-blocking — Concept</h2>
+    <p>
+      <strong>Blocking (synchronous)</strong> — the running thread waits until the operation finishes (e.g., <span class="kbd">fs.readFileSync</span> or a busy loop). In single-threaded Node, this blocks the entire server.
+      <br>
+      <strong>Non-blocking (asynchronous)</strong> — the operation is delegated (to OS, libuv, worker threads), the main thread continues handling other tasks. Callback/promise/async-await used to handle the result.
+    </p>
+  </section>
+
+  <section>
+    <h2>4. Demo: Non-blocking vs Blocking Server</h2>
+    <p class="code-note">Copy these into a Node file (e.g., <span class="kbd">demo-server.js</span>) and run with <span class="kbd">node demo-server.js</span>. Then request endpoints with browser/Postman or curl.</p>
+
+    <div class="example">
+      <div class="box">
+        <h3>Non-blocking (setTimeout)</h3>
+        <pre>
+// Non-blocking example
+const express = require('express');
+const app = express();
+
+app.get('/non-blocking', (req, res) => {
+  console.log('Start NON-BLOCKING request');
+
+  setTimeout(() => {
+    console.log('Finished async task (non-blocking)');
+    res.send('Non-blocking response after 5s');
+  }, 5000);
+
+  console.log('Handler finished quickly — event loop is free');
+});
+
+app.get('/hello', (req, res) => {
+  res.send('Hello immediately');
+});
+
+app.listen(3000, () => console.log('Demo server on port 3000'));
+        </pre>
+      </div>
+
+      <div class="box">
+        <h3>Blocking (busy loop)</h3>
+        <pre>
+// Blocking example (DO NOT use in production)
+const express = require('express');
+const app = express();
+
+app.get('/blocking', (req, res) => {
+  console.log('Start BLOCKING request');
+
+  const start = Date.now();
+  while (Date.now() - start < 5000) {
+    // Busy-wait for 5 seconds — blocks the entire event loop
+  }
+
+  console.log('Finished blocking task');
+  res.send('Blocking response after 5s');
+});
+
+app.get('/hello', (req, res) => {
+  res.send('Hello immediately');
+});
+
+app.listen(3001, () => console.log('Blocking demo server on port 3001'));
+        </pre>
+      </div>
+    </div>
+
+    <p class="tip">Test: Open two tabs. Call <code>/non-blocking</code> (or <code>/blocking</code>) then immediately call <code>/hello</code>. With non-blocking, <code>/hello</code> responds immediately; with blocking, it waits.</p>
+  </section>
+
+  <section>
+    <h2>5. Why the Event Loop Prevents Blocking (short)</h2>
+    <p>
+      Node's event loop picks tasks from a queue and executes callbacks. Async I/O (DB, network, timers) is handled by the OS or libuv; Node registers a callback and continues. When I/O finishes, a callback is queued. Blocking code prevents the loop from processing other callbacks.
+    </p>
+
+    <pre>
+// Pseudocode view:
+while (true) {
+  task = eventQueue.pop();
+  if (task) execute(task); // if task does heavy sync work — everything stalls
+  // else wait for events (I/O, timers)
+}
+    </pre>
+  </section>
+
+  <section>
+    <h2>6. Practical Examples & Patterns</h2>
+
+    <h3>Async DB Call (good)</h3>
+    <pre>
+app.get('/users', async (req, res) => {
+  try {
+    const users = await User.find(); // non-blocking promise
+    res.json(users);
+  } catch (err) {
+    res.status(500).send('error');
+  }
+});
+    </pre>
+
+    <h3>Bad: Synchronous file read (blocks)</h3>
+    <pre>
+app.get('/file-sync', (req, res) => {
+  const data = fs.readFileSync('/large-file'); // blocks event loop
+  res.send(data);
+});
+    </pre>
+
+    <h3>Good: Streaming / async file read</h3>
+    <pre>
+app.get('/file-stream', (req, res) => {
+  const stream = fs.createReadStream('/large-file');
+  stream.pipe(res); // non-blocking streaming
+});
+    </pre>
+  </section>
+
+  <section>
+    <h2>7. Multi-threading in Node: Worker Threads & Cluster</h2>
+    <p>
+      Node can use multiple cores via:
+      <ul>
+        <li><strong>cluster</strong> — forks multiple Node processes (one per core) sharing port via OS.</li>
+        <li><strong>worker_threads</strong> — real threads useful for CPU-heavy tasks; communicate via messages and SharedArrayBuffer.</li>
+      </ul>
+      These let Node handle CPU-bound work without blocking the main event loop.
+    </p>
+
+    <pre>
+// Very short worker_threads example (main.js)
+const { Worker } = require('worker_threads');
+
+const w = new Worker('./heavy-task.js'); // heavy-task runs in separate thread
+w.on('message', msg => console.log('Result:', msg));
+w.postMessage({ start: true });
+    </pre>
+  </section>
+
+  <section>
+    <h2>8. Best Practices</h2>
+    <ul>
+      <li>Always use async I/O (promises/async-await) for DB, network, and file access.</li>
+      <li>Avoid long-running synchronous computations on the main thread; offload them to <code>worker_threads</code> or separate services.</li>
+      <li>Use streaming for large files to reduce memory and avoid blocking.</li>
+      <li>Keep transactions/locks short to avoid contention.</li>
+      <li>Use clustering or process managers (PM2) to scale across CPU cores.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>9. Console.log: Browser vs Server</h2>
+    <p>
+      <strong>React/browser:</strong> <code>console.log()</code> prints in Developer Tools (visible to end user with DevTools).
+      <br>
+      <strong>Node/server:</strong> <code>console.log()</code> prints in server terminal or logs; end users never see it.
+    </p>
+    <pre>
+// In React:
+console.log('client-side log'); // appears in browser DevTools
+
+// In Node:
+console.log('server-side log'); // appears in terminal where node is running
+    </pre>
+  </section>
+
+  <section>
+    <h2>10. Quick Summary</h2>
+    <ul>
+      <li>Single-threaded Node + async I/O = great for concurrency with low memory overhead.</li>
+      <li>Blocking synchronous code on the main thread stops all request handling; avoid it.</li>
+      <li>Multi-threaded languages excel at CPU-heavy tasks but come with complexity (locks, mem use).</li>
+      <li>Use worker threads or multi-process clustering to combine Node's I/O strengths with CPU parallelism.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>11. Further Reading</h2>
+    <ul>
+      <li><a href="https://nodejs.org/en/docs/guides/event-loop-timers-and-nexttick/" target="_blank" rel="noopener">Node.js Event Loop Guide</a></li>
+      <li><a href="https://nodejs.org/en/docs/guides/blocking-vs-non-blocking/" target="_blank" rel="noopener">Blocking vs Non-blocking I/O</a></li>
+      <li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Using_promises" target="_blank" rel="noopener">MDN Promises</a></li>
+      <li><a href="https://nodejs.org/api/worker_threads.html" target="_blank" rel="noopener">Worker Threads</a></li>
+    </ul>
+  </section>
+
+  <footer>
+    <small>Lecture generated by ChatGPT — copy the server examples into Node.js to experiment locally. Want a React demo that fires concurrent requests to show the difference visually? I can add that next.</small>
+  </footer>
+</body>
+</html>
