@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export default function AddTask() {
+function AddTask() {
   const [tasks, setTasks] = useState([]);
   const [task, setTask] = useState("");
 
@@ -16,7 +16,13 @@ export default function AddTask() {
 
       <input type="text"  placeholder="Enter a task"
         value={task} 
-        onChange={(e) => setTask(e.target.value)} />
+        onChange={
+          (e) => { 
+            alert(e.target.value);
+            setTask(e.target.value);
+            // alert(`${task}`);
+          }
+        } />
 
       <button onClick={addTask}>Add</button>
 
@@ -37,3 +43,4 @@ export default function AddTask() {
     </div>
   );
 }
+export default AddTask;

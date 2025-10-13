@@ -1,4 +1,4 @@
-import ProductCard from "./ProductCard.jsx";
+import ProductCard from "../../../Experiment-3.1/src/components/ProductCard.jsx";
 
 function Main() {
     const product = [

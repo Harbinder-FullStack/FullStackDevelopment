@@ -1,4 +1,4 @@
-export default function SubjectList() {
+function SubjectList() {
   const subjects = ["CC", "FSD", "ADBMS"];
   
   return (
@@ -7,10 +7,15 @@ export default function SubjectList() {
       <ul>
         {
           subjects.map (
-              (subject, index) => (<li key={index}>{subject}</li>)
+              (subject, index) => (
+              <li key={index}>
+                {subject}
+              </li>
+            )
           )
         }
       </ul>
     </div>
   );
 }
+export default SubjectList;
