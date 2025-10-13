@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Node.js Execution & API Access</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      background: #f5f7fa;
+      color: #333;
+      line-height: 1.6;
+    }
+    h2 {
+      color: #005f99;
+      border-bottom: 2px solid #005f99;
+      padding-bottom: 5px;
+    }
+    h3 {
+      color: #333;
+      margin-top: 20px;
+    }
+    pre {
+      background: #272822;
+      color: #f8f8f2;
+      padding: 12px;
+      border-radius: 6px;
+      overflow-x: auto;
+    }
+    section {
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+    .flow {
+      font-family: monospace;
+      background: #eef2f7;
+      padding: 10px;
+      border-radius: 6px;
+      white-space: pre;
+      margin-bottom: 20px;
+    }
+    ul {
+      margin-left: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <section>
+    <h2>🌐 Node.js Execution & API Access</h2>
+    <p>This lecture explains how we can execute Node.js code directly, through npm, interactively, or as APIs accessed from browsers, frontend apps, and tools.</p>
+
+    <h3>1. Direct Execution</h3>
+    <p>Run your Node.js file directly in the terminal.</p>
+    <pre>node app.js</pre>
+
+    <h3>2. npm Scripts</h3>
+    <p>Define scripts in <code>package.json</code> and execute with npm.</p>
+    <pre>
+"scripts": {
+  "start": "node app.js",
+  "dev": "nodemon app.js"
+}
+# Run with:
+npm start
+npm run dev
+    </pre>
+
+    <h3>3. REPL (Interactive Mode)</h3>
+    <p>Start Node.js REPL (Read–Eval–Print Loop) and execute JS line by line.</p>
+    <pre>
+node
+> console.log("Hello from REPL")
+Hello from REPL
+    </pre>
+
+    <h3>4. Accessing Node.js APIs</h3>
+    <p>When Node.js runs as a server (e.g., Express), it provides APIs that can be accessed in multiple ways.</p>
+    <div class="flow">
+          ┌─────────────────────────────┐
+          │  Node.js Server (Express)   │
+          │  app.get('/api/hello') {...}│
+          └──────────────┬──────────────┘
+                         │
+   ┌─────────────────────┼─────────────────────┐
+   │                     │                     │
+Browser (URL)       React Frontend        API Tools
+http://localhost:5000   fetch("/api/hello")    Postman / curl
+    </div>
+    <pre>
+// Example Express API
+const express = require('express');
+const app = express();
+app.get('/api/hello', (req,res) => res.json({msg: "Hello API!"}));
+app.listen(5000, () => console.log("Server running on 5000"));
+    </pre>
+
+    <h3>5. CLI Tool with Arguments</h3>
+    <p>Node.js can accept command-line arguments using <code>process.argv</code>.</p>
+    <pre>
+# Run:
+node app.js John 25
+
+// app.js
+const args = process.argv;
+console.log("Name:", args[2]);
+console.log("Age:", args[3]);
+    </pre>
+
+    <h3>6. Background Worker / Scheduled Jobs</h3>
+    <p>Node.js scripts can run at intervals using cron or libraries like <code>node-cron</code>.</p>
+    <pre>
+const cron = require('node-cron');
+
+// Run every minute
+cron.schedule('* * * * *', () => {
+  console.log("Task running every minute");
+});
+    </pre>
+  </section>
+
+</body>
+</html>
