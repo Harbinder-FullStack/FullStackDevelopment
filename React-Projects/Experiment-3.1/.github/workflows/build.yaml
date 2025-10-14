@@ -19,6 +19,10 @@ jobs:
       run:
         working-directory: React-Projects/Experiment-3.1
 
+      permissions:
+        contents: read
+        packages: write
+        
     steps:
       # Step 1: Checkout code
       - name: Checkout Repository
@@ -40,6 +44,11 @@ jobs:
       - name: Build Docker Image
         run: |
           docker build -t react-experiment-3-1 .
+      
+      - name: Check Docker Username (for debug only)
+        run: echo "Docker user is $DOCKER_USERNAME"
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
 
       # Step 5 (Optional): Push to Docker Hub
       - name: Login to Docker Hub
